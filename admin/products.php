@@ -33,8 +33,9 @@
                         <?php foreach($products as $productItem):?>
                         <tr>
                             <td><?=$productItem['id']?></td>
-                            <td><?=$productItem['image']?>
-                                <img src = "../<?=$productItem['image']?>" style="width:50px;height" alt="Image"/>
+                            <td>
+                                <img src ="../<?=$productItem['image'];?>" 
+                                style="width:50px;height:50px;" alt="Product Image"/>
                              </td>
                             <td><?=$productItem['name']?></td>
                             <td>
@@ -63,7 +64,7 @@
                         {?>
                           
                           <tr>
-                            <td colspan = "4">No record found</td>
+                            <td colspan = "5">No record found</td>
                           </tr>
                           
                         <?php
