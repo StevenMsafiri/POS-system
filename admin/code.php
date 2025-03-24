@@ -259,4 +259,92 @@ if (isset($_POST['updateProduct']))
 
 }
 
+if (isset($_POST['saveCustomer'])) 
+{
+    $name = isset($_POST['name']) ? validate($_POST['name']) : '';
+    $email = isset($_POST['email']) ? validate($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? validate($_POST['phone']) : '';
+    $status = isset($_POST['status']) == true ? 1 : 0;
+
+   
+    if (empty($name) || empty($email)) {
+        redirect('customers-create.php', 'Please fill required fields.');
+    }
+
+    // Check if email already exists
+    $emailCheck = mysqli_query($conn, "SELECT * FROM customers WHERE email = '$email'"); 
+
+    if ($emailCheck && mysqli_num_rows($emailCheck) > 0) {
+        redirect('customers-create.php', 'Email already used by another user.');
+    }
+
+    // Data to insert
+    $data = [
+        'name' => $name,
+        'email' => $email,
+        'phone' => $phone,
+        'status' => $status
+    ];
+
+    // Insert data
+    $result = insert('customers', $data);
+
+    if ($result) {
+        redirect('customers.php', 'Admin Created Successfully!');
+    } else {
+        redirect('customers-create.php', 'Something went wrong.');
+    }
+}
+
+if(isset($_POST['updateCustomer']))
+{
+    
+    $customerId = validate($_POST['customerId']);
+
+    $customerData = getById('customers', $customerId);
+
+    if($customerData['status'] != 200)
+    {
+        redirect('customers-edit.php?id='.$customerId, 'Please fill required fields.');
+    }
+
+
+    $name = validate($_POST['name']);
+    $email = validate($_POST['email']);
+    $phone = validate($_POST['phone']);
+    $status = isset($_POST['status']) == true ? 1 : 0;
+
+    if (empty($name) || empty($email)){
+        redirect('customers-create.php', 'Please fill required fields.');
+    }
+
+    // Check if email already exists
+    $emailCheck = mysqli_query($conn, "SELECT * FROM customers WHERE email = '$email' AND  id!='$customerId'"); 
+
+    if ($emailCheck && mysqli_num_rows($emailCheck) > 0) {
+        redirect('customers-edit.php', 'Email already used by another user.');
+    }
+
+
+    $data = [
+        'name' => $name,
+        'email' => $email,
+        
+        'phone' => $phone,
+        'status' => $status
+    ];
+
+    // Updates data
+
+    $result = update('customers', $customerId, $data);
+
+    if ($result) {
+        redirect('customers-edit.php?id='.$customerId, 'Customer Updated successfully!');
+    } else {
+        redirect('customers-edit.php?id='.$customerId, 'Something went wrong.');
+    }
+   
+
+}
+
 ?>

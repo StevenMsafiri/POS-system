@@ -3,8 +3,8 @@
 <div class="container-fluid px-4">
     <div class="card mt-4 shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Products</h4>
-            <a href="products-create.php" class="btn btn-primary float-end">Add Product</a>
+            <h4 class="mb-0">Customers</h4>
+            <a href="customers-create.php" class="btn btn-primary float-end">Add Customer</a>
         </div>
         <div class="card-body">
             <?php alertMessage() ?>
@@ -13,7 +13,6 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Image</th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -21,27 +20,23 @@
                     </thead>
                     <tbody>
                         <?php
-                        $products = getAll('products');
-                        if(!$products)
+                        $customers = getAll('customers');
+                        if(!$customers)
                         {
                             echo '<h4>Something Went Wrong</h4>';
                             return false;
                         }
-                        if(mysqli_num_rows($products) > 0)
+                        if(mysqli_num_rows($customers) > 0)
                         { 
                         ?>
-                        <?php foreach($products as $productItem):?>
+                        <?php foreach($customers as $customerItem):?>
                         <tr>
-                            <td><?=$productItem['id']?></td>
-                            <td>
-                                <img src ="../<?=$productItem['image'];?>" 
-                                style="width:50px;height:50px;" alt="Product Image"/>
-                             </td>
-                            <td><?=$productItem['name']?></td>
+                            <td><?=$customerItem['id']?></td>
+                            <td><?=$customerItem['name']?></td>
                             <td>
                                 <?php
 
-                                if($productItem['status'] == 1)
+                                if($customerItem['status'] == 1)
                                 {
                                     echo '<span class="badge bg-danger">Hidden</span>';
                                 }
@@ -53,14 +48,8 @@
                                 ?>
                             </td>
                             <td>
-                                <a href="products-edit.php?id=<?=$productItem['id']?>" class="btn btn-success btn-sm">Edit</a>
-                                <a 
-                                href="products-delete.php?id=<?=$productItem['id']?>"
-                                 class="btn btn-danger btn-sm" 
-                                 onclick="return confirm('Are you sure you want to delete this image')"
-                                 >
-                                   Delete
-                                </a>
+                                <a href="customers-edit.php?id=<?=$customerItem['id']?>" class="btn btn-success btn-sm">Edit</a>
+                                <a href="customers-delete.php?id=<?=$customerItem['id']?>" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -70,7 +59,7 @@
                         {?>
                           
                           <tr>
-                            <td colspan = "5">No record found</td>
+                            <td colspan = "4">No record found</td>
                           </tr>
                           
                         <?php

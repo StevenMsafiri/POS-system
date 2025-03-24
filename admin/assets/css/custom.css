@@ -1,0 +1,23 @@
+
+.select2-container .select-selection--single{
+    height: 38px !important;
+}
+
+
+.select2-container---default .select-selection--single .select2-selection_rendered{
+
+    line-height: 38px !important;
+}
+
+.select2-container---default .select-selection--single .select2-selection_arrow{
+
+    line-height: 38px !important;
+}
+
+.quantityInput{
+
+    width: 50px !important;
+    text-align: center;
+    border: 1px silid #cfb1b1;
+    outline: 0;
+}
