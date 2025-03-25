@@ -68,13 +68,13 @@
         <div class="card-header">
             <h4 class="mb-0">Products</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body" id="productArea">
             <?php
             if(isset($_SESSION['productItems']))
             {
             ?>
 
-<div class="table-responsive mb-3">
+<div class="table-responsive mb-3" id="productContent">
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -99,6 +99,7 @@
                             <td><?=$item['price']?></td>
                             <td>
                                 <div class="input_group d-flex gap-2 qtyBox">
+                                    <input type="hidden" value="<?=$item['product_id'];?>" class="prodId" />
                                     <button class="input-group-text decrement">-</button>
                                     <input type="text" value="<?=$item['quantity'];?>"class="qty quantityInput"/>
                                     <button class="input-group-text increment">+</button>
