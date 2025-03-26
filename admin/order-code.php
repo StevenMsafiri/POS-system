@@ -1,9 +1,6 @@
 <?php
 
-
 include ('../config/function.php');
-
-
 
 if(!isset($_SESSION['productItems']))
 {
@@ -104,4 +101,33 @@ if(isset($_POST['productIncDec']))
     {
         jsonResponses(500, 'success', 'Somethind Went Wrong. Please re-fresh');
     }
+}
+
+if(isset($_POST['proceedToPlaceOrderBtn']))
+{
+    $phone = validate($_POST['cphone']);
+    $payment_mode = validate($_POST['payment_mode']);
+
+    $checkCustomer = mysqli_query($conn, "SELECT * FROM  customers WHERE phone = '$phone' LIMIT 1");
+    if($checkCustomer)
+    {
+        if(mysqli_num_rows($checkCustomer) > 0)
+        {
+            $_SESSION['invoice_no'] = "INV-".rand(111111,999999);
+            $_SESSION['cphone'] = $phone;
+            $_SESSION['payment_mode'] = $payment_mode;
+            jsonResponses(200, 'success', "Customer Found");
+        }
+
+        else
+        {
+            $_SESSION['cphone'] = $phone;
+            jsonResponses(404, 'Warning', "Customer Not Found");
+        }
+    }
+    else
+    {
+        jsonResponses(500, 'Error', "Something Went Wrong");
+    }
+
 }

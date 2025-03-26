@@ -72,6 +72,11 @@
             <?php
             if(isset($_SESSION['productItems']))
             {
+                if(empty($_SESSION['productItems'])){
+
+                    unset($_SESSION['productItems']);
+                    unset($_SESSION['productItemIds']);
+                }
             ?>
 
 <div class="table-responsive mb-3" id="productContent">
@@ -90,8 +95,7 @@
                        <?php
 
                         $i=1;
-                        foreach($_SESSION['productItems'] as $key => $item) :
-                        
+                        foreach($_SESSION['productItems'] as $key => $item):    
                        ?>
                         <tr>
                             <td><?=$i++; ?></td>
@@ -108,7 +112,7 @@
 
                             <td><?=number_format($item['price'] * $item['quantity'], 0);?></td>
                             <td>
-                                <a href="order-item-delete?index="<?=$key;?> class="btn btn-danger">Remove</a>
+                                <a href="order-item-delete.php?index=<?php echo $key?>" class="btn btn-danger">Remove</a>
                             </td>
                         </tr>
 
@@ -116,10 +120,33 @@
 
                     </tbody>
                 </table>
+
+                <div class="mt-2 mb-3">
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                    <label for="payment mb-1">Select Payment Mode</label>
+                    <select class="form-select" id="payment">
+                        <option value=" ">-- Select payment mode --</option>
+                        <option value="Cash Payment">Cash Payment</option>
+                        <option value="Online Payment">Online Payment</option>
+                    </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="number">Enter Customer Phone number</label>
+                        <input type="number" id="number" class="form-control" value=""/>
+                    </div>
+
+                    <div class="col-md-4">
+                        <br/>
+                        <button type="button" class="btn btn-warning w-100 proceedToPlaceOrder">Proceed to place order</button>
+                    </div>
+                </div>
+            </div>
             </div>
 
             <?php
-
             }
             else
             {

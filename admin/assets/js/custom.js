@@ -1,7 +1,6 @@
 $(document).ready(function()
 {
     alertify.set('notifier','position', 'top-right');
-    // alertify.success('res.message');
 
     $(document).on("click", '.increment', function(){
         var $quantityInput = $(this).closest('.qtyBox').find('.qty');
@@ -48,6 +47,7 @@ $(document).ready(function()
                 'quantity': $qty
             },
             success: function (response){
+                console.log(response);
 
                 var res = JSON.parse(response);
 
@@ -66,5 +66,85 @@ $(document).ready(function()
 
         })
     }
+
+
+    $(document).on('click','.proceedToPlaceOrder', function()
+    {
+        var paymentMode = $('#payment').val();
+        var customerPhone = $('#number').val();
+
+
+        if(paymentMode == " ")
+        {
+            swal("Select Payment Mode", "Warning");
+
+            return false;
+        }
+
+        if(customerPhone == "" || !$.isNumeric(customerPhone))
+        {
+            swal("Enter customer's phone number","Enter valid number", "Warning");
+
+            return false;
+        }
+
+        var data ={
+            'proceedToPlaceOrderBtn': true,
+            'cphone':customerPhone,
+            'payment_mode': paymentMode,
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "order-code.php",
+            data: data,
+            success: function (response) {
+
+                console.log(response);
+
+                var res = JSON.parse(response);
+
+                if(res.status == 200)
+                {
+                    window.location.href = "order-summary.php";
+                }
+
+                else if(res.status == 404)
+                {
+                    swal("404", res.message, res.status_type,{
+
+                        buttons:{
+                            catch:{
+                                text:"Add customer",
+                                value: "catch"
+                            },
+                            cancel: "Cancel"
+                        }
+
+                        
+                    })
+
+                    .then((value) => {
+                        switch(value){
+
+                           case "catch":
+                              console.log('Pop the customer add model');
+                              break;
+                              
+                           default:
+                        }
+                    })
+                    
+                }
+                else
+                {
+                    swal(res.status, res.message, res.status_type);
+                }
+            }
+
+        })
+
+
+    })
 
 })
