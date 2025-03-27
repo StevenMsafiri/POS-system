@@ -47,7 +47,6 @@ $(document).ready(function()
                 'quantity': $qty
             },
             success: function (response){
-                console.log(response);
 
                 var res = JSON.parse(response);
 
@@ -128,7 +127,8 @@ $(document).ready(function()
                         switch(value){
 
                            case "catch":
-                              console.log('Pop the customer add model');
+                            $('#c_number').val(customerPhone);
+                            $('#addCustomerModal').modal('show');
                               break;
                               
                            default:
@@ -145,6 +145,63 @@ $(document).ready(function()
         })
 
 
+    })
+
+    $(document).on('click','.saveCustomer', function()
+    {
+        var c_name = $('#c_name').val();
+        var c_phone = $('#c_number').val();
+        var c_email = $('#c_email').val();
+
+        console.log(c_name, c_email, c_phone);
+
+        if (c_name != '' && c_phone != '')
+        {
+            if($.isNumeric(c_phone))
+                {
+                    var data = {
+                        'saveCustomerBtn':true,
+                        'name': c_name,
+                        'phone':c_phone,
+                        'email':c_email
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "order-code.php",
+                        data: data,
+                        success: function(response)
+                        {
+                            var res = JSON.parse(response);
+
+                            if(res.status == 200)
+                            {
+                               swal(res.message, res.message,res.status_type);
+                               $('#addCustomerModal').modal('hide');
+
+                            }
+                            else if(res.status == 500)
+                            {
+                                swal(res.message, res.message,res.status_type);
+                            }
+                            else
+                            {
+                                swal(res.message, res.message, res.status_type);
+                                
+                            }
+                        }
+
+                    });
+                }
+            else
+            {
+                swal("Please Enter a valid Phone number", "Warning");
+            }
+        }
+        else
+        {
+            swal("Please fill required fields", "Warning");
+        }
     })
 
 })
