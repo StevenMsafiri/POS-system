@@ -204,4 +204,37 @@ $(document).ready(function()
         }
     })
 
+
+    $(document).on('click', '#saveOrder', function()
+    {
+            $.ajax({
+                type: "POST",
+                url: "order-code.php",
+                data:{
+                    'saveOrder': true
+                },
+                success:function(response)
+                {
+                    var res = JSON.parse(response);
+
+                    if(res.status == 200)
+                        {
+                           swal(res.message, res.message,res.status_type);
+                           $('#orderPlaceSuccessMessage').text(res.message);
+                           $('#orderSuccessModal').modal('show');
+                        }
+                        else if(res.status == 500)
+                        {
+                            swal(res.message, res.message,res.status_type);
+                        }
+                        else
+                        {
+                            swal(res.message, res.message, res.status_type);
+                            
+                        }
+                }
+            });
+        }
+    );
+
 })
